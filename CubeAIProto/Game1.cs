@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Threading;
 
 namespace CubeAIProto
@@ -19,6 +20,7 @@ namespace CubeAIProto
         private Sprite[,] bf = new Sprite[3, 3];
         private CubeM cube = new CubeM();
         private Texture2D tex;
+        private TimerManager tmanager = new TimerManager(500);
 
         private int[] edgealgo = new int[15]
         {
@@ -126,7 +128,7 @@ namespace CubeAIProto
             Color.Yellow,Color.Orange
         };
 
-
+        private int timer;
         private Color[][] wholecubenew =
         {
             new Color[] {Color.White,Color.Blue },
@@ -154,6 +156,7 @@ namespace CubeAIProto
             new Color[]{Color.Yellow,Color.Blue },
             new Color[]{Color.Yellow,Color.Orange },
 
+            
         };
         public Game1()
         {
@@ -170,6 +173,7 @@ namespace CubeAIProto
             _graphics.ApplyChanges();
             cube.InitialiseCube();
             base.Initialize();
+            timer = 60;
         }
 
         protected override void LoadContent()
@@ -230,18 +234,18 @@ namespace CubeAIProto
                 Exit();
 
 
-            cube.UpdateCube();
+            cube.UpdateCube(gameTime);
             void DoAlgorithm(CubeM cubeM)
             {
                 for (int i = 0; i < edgealgo.Length; i++)
                 {
-                    cubeM.Turn(edgealgo[i]);
-                    Thread.Sleep(100);
+                    cubeM.Turn(edgealgo[i],gameTime);
                 }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
+                Thread.Sleep(100);
                 bfind = new Color[2]
                 { cube.cubeorientationup[2, 1],cube.cubeorientationright[1, 0]};
 
@@ -251,393 +255,267 @@ namespace CubeAIProto
                     if (bfind[0] == wholecubenew[i][0] && bfind[1] == wholecubenew[i][1])
                     {
 
-                        //switch (i)
-                        //{
-                        //    case 0:
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 1:
-                        //        //find anything to swap     //  RECURSION
-                        //        //Solve(cube, unsolved[0]);
-                        //        break;
-                        //    case 2:
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 3:
-                        //        DoAlgorithm(cube);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 4:
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 5:
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 6:
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 7:
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 8:
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(5);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(2);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
+                        switch (i)
+                        {
+                            case 0:
+                                cube.Turn(71, gameTime);
+                                cube.Turn(71, gameTime);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                             
+                                cube.Turn(81, gameTime);
+                                cube.Turn(81, gameTime);
+                                cube.Turn(20, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 1:
+                                //find anything to swap     //  RECURSION
+                                //Solve(cube, unsolved[0]);
+                                break;
+                            case 2:
+                                cube.Turn(71, gameTime);
+                                cube.Turn(71, gameTime);
+                                cube.Turn(20, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                     
+                                cube.Turn(81, gameTime);
+                                cube.Turn(81, gameTime);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 3:
+                                DoAlgorithm(cube);
+                                unsolved.Remove(i);
+                                break;
+                            case 4:
+                                cube.Turn(7, gameTime);
+                                cube.Turn(501, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(201, gameTime);
+                                cube.Turn(8, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 5:
+                                cube.Turn(501, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                   
+                                cube.Turn(8, gameTime);
+                                cube.Turn(201, gameTime); ;
+                                unsolved.Remove(i);
+                                break;
+                            case 6:
+                                cube.Turn(8, gameTime);
+                                cube.Turn(501, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                     ;
+                                cube.Turn(8, gameTime);
+                                cube.Turn(201, gameTime);
+                                cube.Turn(7, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 7:
+                                cube.Turn(201, gameTime);
+                                cube.Turn(8, gameTime);
+                                DoAlgorithm(cube);
+                  
+                                cube.Turn(7, gameTime);
+                                cube.Turn(501, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 8:
+                                cube.Turn(71, gameTime);
+                                cube.Turn(5, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                          
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(2, gameTime);
+                                cube.Turn(81, gameTime);
+                                unsolved.Remove(i);
 
-                        //        break;
-                        //    case 9:
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 10:
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 11:
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(50);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 12:
-                        //        //find anything to swap     //  RECURSION
-                        //        //Solve(cube, unsolved[0]);
-                        //        break;
-                        //    case 13:
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 14:
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 15:
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 16:
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 17:
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 18:
-                        //        cube.Turn(81);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(71);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 19:
-                        cube.Turn(501);
-                        Thread.Sleep(500);
-                        cube.Turn(501);
-                        Thread.Sleep(500);
-                        cube.Turn(8);
-                        Thread.Sleep(500);
-                        DoAlgorithm(cube);
-                        Thread.Sleep(500);
-                        cube.Turn(7);
-                        Thread.Sleep(500);
-                        cube.Turn(201);
-                        Thread.Sleep(500);
-                        cube.Turn(201);
-                        Thread.Sleep(500);
-                        unsolved.Remove(i);
-                        break;
-                        //    case 20:
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 21:
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 22:
-                        //        cube.Turn(20);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(50);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
-                        //    case 23:
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
+                                break;
+                            case 9:
+                                cube.Turn(501, gameTime);
+                                cube.Turn(501, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                              
+                                cube.Turn(8, gameTime);
+                                cube.Turn(201, gameTime);
+                                cube.Turn(201, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 10:
+                                cube.Turn(501, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(201, gameTime);
+                                cube.Turn(8, gameTime);
+                                DoAlgorithm(cube);
+                             
+                                cube.Turn(7, gameTime);
+                                cube.Turn(501, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(201, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 11:
+                                cube.Turn(8, gameTime);
+                                DoAlgorithm(cube);
+                          
+                                cube.Turn(7, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 12:
+                                //find anything to swap     //  RECURSION
+                                //Solve(cube, unsolved[0]);
+                                break;
+                            case 13:
+                                cube.Turn(201, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                         
+                                cube.Turn(8, gameTime);
+                                cube.Turn(501, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 14:
+                                cube.Turn(20, gameTime);
+                                cube.Turn(20, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(501, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(201, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(50, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 15:
+                                cube.Turn(501, gameTime);
+                                cube.Turn(8, gameTime);
+                                DoAlgorithm(cube);
+                        
+                                cube.Turn(201, gameTime);
+                                cube.Turn(7, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 16:
+                                cube.Turn(81, gameTime);
+                                cube.Turn(20, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                       
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(71, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 17:
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                              
+                                cube.Turn(8, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 18:
+                                cube.Turn(81, gameTime);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                              
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(20, gameTime);
+                                cube.Turn(71, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 19:
+                            
+                                cube.Turn(501, gameTime);
+                             
+                            
+                                cube.Turn(501, gameTime);
+                            
+                                cube.Turn(8, gameTime);
+                             
+                            DoAlgorithm(cube);
+                            
+                                cube.Turn(7, gameTime);
+                             
+                                cube.Turn(201, gameTime);
+                              
+                                cube.Turn(201, gameTime);
+                               
+                            unsolved.Remove(i);
+                            break;
+                            case 20:
+                                cube.Turn(50, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                             
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(20, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 21:
+                                cube.Turn(50, gameTime);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(20, gameTime);
+                                cube.Turn(20, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 22:
+                                cube.Turn(20, gameTime);
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+                                
+                                cube.Turn(8, gameTime);
+                                cube.Turn(8, gameTime);
+                                cube.Turn(50, gameTime);
+                                unsolved.Remove(i);
+                                break;
+                            case 23:
+                                cube.Turn(7, gameTime);
+                                cube.Turn(7, gameTime);
+                                DoAlgorithm(cube);
+              
+                                cube.Turn(7, gameTime); ;
+                                cube.Turn(7, gameTime);
+                                unsolved.Remove(i);
+                                break;
 
 
 
 
 
-                        //}
-                        cube.Turn(5);
+                        }
                     }
                 }
             }

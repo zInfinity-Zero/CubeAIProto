@@ -25,6 +25,8 @@ namespace CubeAIProto
         public Color[,] cubeorientationfront, cubeorientationright, cubeorientationleft, cubeorientationup, cubeorientationdown, cubeorientationback;
         public Color[][,] wholecube = new Color[6][,];
         private bool started = false;
+
+        private TimerManager tmanager = new TimerManager(500);
         public int numofmoves { get; set; } = 0;
 
        
@@ -33,7 +35,7 @@ namespace CubeAIProto
         {
 
         }
-        public void UpdateCube()
+        public void UpdateCube(GameTime g)
         {
             KeyboardState kstate = Keyboard.GetState();
 
@@ -60,8 +62,16 @@ namespace CubeAIProto
 
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
             {
-                Turn(1);
+                Turn(1, g);
+               
+                Thread.Sleep(50);
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                Turn(81,g);
+                Thread.Sleep(50);
+            }
+            
         }
         public void XTurn()
         {
@@ -127,10 +137,12 @@ namespace CubeAIProto
             Color a = cubeorientationback[0, 2];
             Color b = cubeorientationback[1, 2];
             Color c = cubeorientationback[2, 2];
+            Color d = cubeorientationback[0, 1];
+
             back = this.cubeorientationback;
             this.cubeorientationback[0, 1] = back[2, 1];
             this.cubeorientationback[1, 1] = back[1, 1];
-            this.cubeorientationback[2, 1] = back[0, 1];
+            this.cubeorientationback[2, 1] = d;
             this.cubeorientationback[2, 2] = back[0, 0];
             this.cubeorientationback[1, 2] = back[1, 0];
             this.cubeorientationback[0, 2] = back[2, 0];//alteration as cant do cubeorientationback = down
@@ -141,10 +153,11 @@ namespace CubeAIProto
             a = cubeorientationdown[0, 2];
             b = cubeorientationdown[1, 2];
             c = cubeorientationdown[2, 2];
+            d = cubeorientationdown[0, 1];
             down = this.cubeorientationdown;
             this.cubeorientationdown[0, 1] = down[2, 1];
             this.cubeorientationdown[1, 1] = down[1, 1];
-            this.cubeorientationdown[2, 1] = down[0, 1];
+            this.cubeorientationdown[2, 1] = d; 
             this.cubeorientationdown[2, 2] = down[0, 0];
             this.cubeorientationdown[1, 2] = down[1, 0];
             this.cubeorientationdown[0, 2] = down[2, 0];//alteration 
@@ -157,7 +170,7 @@ namespace CubeAIProto
 
 
 
-            Color d = cubeorientationright[2, 0];
+            d = cubeorientationright[2, 0];
             Color e = cubeorientationright[0, 0];
             Color f = cubeorientationright[1, 0];//right face 4 turn
             cubeorientationright[0, 0] = temprFace[0, 2];
@@ -268,7 +281,7 @@ namespace CubeAIProto
                 gFace,bFace,wFace,yFace,rFace,oFace
             };
         }
-        public void Turn(int turn)
+        public void Turn(int turn,GameTime g)
         {
             tempgFace = cubeorientationfront;
             temprFace = cubeorientationright;
@@ -320,6 +333,10 @@ namespace CubeAIProto
                 //        cubeorientationup[i, 2 - j] = tempwFace[j, i];
                 //    }
                 //}
+
+               
+               
+
 
             }
             else if (turn == 6)
@@ -431,30 +448,30 @@ namespace CubeAIProto
             }
             else if (turn == 1)
             {
-                this.Turn(4);
-                this.Turn(4);
-                this.Turn(4);
+                this.Turn(4, g);
+                this.Turn(4, g);
+                this.Turn(4, g);
 
             }
             else if (turn == 2)
             {
-                this.Turn(5);
-                this.Turn(5);
-                this.Turn(5);
+                this.Turn(5, g);
+                this.Turn(5, g);
+                this.Turn(5, g);
 
             }
             else if (turn == 3)
             {
-                this.Turn(6);
-                this.Turn(6);
-                this.Turn(6);
+                this.Turn(6, g);
+                this.Turn(6, g);
+                this.Turn(6, g);
 
             }
             else if (turn == 8)
             {
-                this.Turn(7);
-                this.Turn(7);
-                this.Turn(7);
+                this.Turn(7, g);
+                this.Turn(7, g);
+                this.Turn(7, g);
 
             }
             else if (turn == 0)
@@ -483,16 +500,16 @@ namespace CubeAIProto
             }
             else if (turn == 9)
             {
-                this.Turn(0);
-                this.Turn(0);
-                this.Turn(0);
+                this.Turn(0, g);
+                this.Turn(0, g);
+                this.Turn(0, g);
 
             }
             else if (turn == 50) // bottom 5
             {
                 YTurn();
                 YTurn();
-                this.Turn(2);
+                this.Turn(2, g);
                 YTurn();
                 YTurn();
 
@@ -501,18 +518,20 @@ namespace CubeAIProto
             {
                 YTurn();
                 YTurn();
-                this.Turn(5);
+                this.Turn(5, g);
                 YTurn();
                 YTurn();
 
             }
             else if (turn == 51)//wide 5 
             {
-                this.Turn(5);
+                this.Turn(5, g);
                 YTurn();
+
                 XTurn();
 
-                this.Turn(9);
+                this.Turn(9, g);
+
                 XTurn();
                 XTurn();
                 XTurn();
@@ -523,11 +542,11 @@ namespace CubeAIProto
             }
             else if (turn == 21)//wide 2
             {
-                this.Turn(2);
+                this.Turn(2, g);
                 YTurn();
                 XTurn();
 
-                this.Turn(0);
+                this.Turn(0, g);
                 XTurn();
                 XTurn();
                 XTurn();
@@ -538,10 +557,10 @@ namespace CubeAIProto
             }
             else if (turn == 501) // bottom 5 wide
             {
-                Turn(50);
+                Turn(50, g);
                 YTurn();
                 XTurn();
-                Turn(9);
+                Turn(9, g);
                 XTurn();
                 XTurn();
                 XTurn();
@@ -552,10 +571,10 @@ namespace CubeAIProto
             }
             else if (turn == 201) // bottom 5 wide
             {
-                Turn(20);
+                Turn(20, g);
                 YTurn();
                 XTurn();
-                Turn(0);
+                Turn(0, g);
                 XTurn();
                 XTurn();
                 XTurn();
@@ -566,17 +585,25 @@ namespace CubeAIProto
             }
             else if (turn == 71)//7 wide
             {
-                Turn(7);
-                Turn(0);
+                Turn(7, g);
+                Turn(0, g);
 
             }
             else if (turn == 81)//8 wide
             {
-                Turn(8);
-                Turn(9);
+                Turn(8, g);
+                Turn(9, g);
 
             }
+            else
+            {
 
+            }
+            //tmanager.ResetZero();
+            //if (!tmanager.ready)
+            //{
+            //    tmanager.UpdateTimer(g);
+            //}
 
 
         }
@@ -585,7 +612,7 @@ namespace CubeAIProto
             return gFace;
         }
 
-        public int[] Scramble()
+        public int[] Scramble(GameTime g)
         {
             numofmoves = 0;
             started = true;
@@ -599,7 +626,7 @@ namespace CubeAIProto
                 int a = random.Next(moves.Length);
                 int b = moves[a];
                 scrambl[i] = b;
-                Turn(b);
+                Turn(b, g);
             }
             return scrambl;
         }
