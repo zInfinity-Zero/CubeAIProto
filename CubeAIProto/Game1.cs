@@ -106,7 +106,7 @@ namespace CubeAIProto
             Color.Blue,Color.Yellow
         };
         private Color[] t = new Color[2]
-        {
+        {//
             Color.Blue,Color.Red
         };
         private Color[] u = new Color[2]
@@ -547,22 +547,22 @@ namespace CubeAIProto
                         //        unsolved.Remove(i);
                         //        break;
                         //    case 19:
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(501);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(8);
-                        //        Thread.Sleep(500);
-                        //        DoAlgorithm(cube);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(7);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        cube.Turn(201);
-                        //        Thread.Sleep(500);
-                        //        unsolved.Remove(i);
-                        //        break;
+                        cube.Turn(501);
+                        Thread.Sleep(500);
+                        cube.Turn(501);
+                        Thread.Sleep(500);
+                        cube.Turn(8);
+                        Thread.Sleep(500);
+                        DoAlgorithm(cube);
+                        Thread.Sleep(500);
+                        cube.Turn(7);
+                        Thread.Sleep(500);
+                        cube.Turn(201);
+                        Thread.Sleep(500);
+                        cube.Turn(201);
+                        Thread.Sleep(500);
+                        unsolved.Remove(i);
+                        break;
                         //    case 20:
                         //        cube.Turn(50);
                         //        Thread.Sleep(500);
