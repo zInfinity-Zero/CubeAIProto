@@ -26,11 +26,21 @@ namespace CubeAIProto
         {
              4,5,1,2,1,6,1,1,2,1,2,4,5,1,3
         };
+        private int[] coralgo = new int[15]
+        {
+             4,2,1,2,4,5,1,3,4,5,1,2,1,6,4
+        };
         List<int> unsolved = new List<int>()
         {
             0,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23
         };
+        List<int> unsolvedcorners = new List<int>()
+        {
+            0,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23
+        };
         private Color[] bfind = new Color[2];
+        private Color[] cornerbuffer = new Color[3];
+
         private Color[] a = new Color[2]
         {
             Color.White,Color.Blue
@@ -128,7 +138,6 @@ namespace CubeAIProto
             Color.Yellow,Color.Orange
         };
 
-        private int timer;
         private Color[][] wholecubenew =
         {
             new Color[] {Color.White,Color.Blue },
@@ -158,6 +167,36 @@ namespace CubeAIProto
 
             
         };
+
+        private Color[][] wholecubeedge =
+        {
+            new Color[] {Color.White, Color.Orange,Color.Blue },
+            new Color[]{Color.White, Color.Blue,Color.Red },
+            new Color[]{Color.White,Color.Green ,Color.Red },
+            new Color[]{Color.White,Color.Orange ,Color.Green},
+            new Color[]{Color.Orange,Color.White,Color.Blue },
+            new Color[]{Color.Orange,Color.Green,Color.White },
+            new Color[]{Color.Orange,Color.Yellow,Color.Green },
+            new Color[]{Color.Orange,Color.Blue,Color.Yellow },
+            new Color[]{Color.Green,Color.White,Color.Orange },
+            new Color[]{Color.Green,Color.Red,Color.White },
+            new Color[]{Color.Green,Color.Yellow,Color.Red },
+            new Color[]{Color.Green,Color.Orange,Color.Yellow },
+            new Color[]{ Color.Red,Color.White,Color.Green},
+            new Color[]{Color.Red,Color.Blue ,Color.White},
+            new Color[]{Color.Red,Color.Yellow ,Color.Blue},
+            new Color[]{Color.Red,Color.Green ,Color.Yellow},
+            new Color[]{Color.Blue,Color.White,Color.Red },
+            new Color[]{Color.Blue,Color.Orange,Color.White },
+            new Color[]{Color.Blue,Color.Yellow,Color.Orange },
+            new Color[]{ Color.Blue,Color.Red,Color.Yellow},
+            new Color[]{Color.Yellow,Color.Green,Color.Orange },
+            new Color[]{Color.Yellow,Color.Red ,Color.Green},
+            new Color[]{Color.Yellow,Color.Blue,Color.Red },
+            new Color[]{Color.Yellow,Color.Orange,Color.Blue },
+
+
+        };
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -173,7 +212,6 @@ namespace CubeAIProto
             _graphics.ApplyChanges();
             cube.InitialiseCube();
             base.Initialize();
-            timer = 60;
         }
 
         protected override void LoadContent()
@@ -240,6 +278,14 @@ namespace CubeAIProto
                 for (int i = 0; i < edgealgo.Length; i++)
                 {
                     cubeM.Turn(edgealgo[i],gameTime);
+                }
+            }
+
+            void DoAlgorithmC(CubeM cubeM)
+            {
+                for (int i = 0; i < coralgo.Length; i++)
+                {
+                    cubeM.Turn(coralgo[i], gameTime);
                 }
             }
 
@@ -509,6 +555,239 @@ namespace CubeAIProto
                                 cube.Turn(7, gameTime); ;
                                 cube.Turn(7, gameTime);
                                 unsolved.Remove(i);
+                                break;
+
+
+
+
+
+                        }
+                    }
+                }
+            }
+
+            ////////////EDGESSSS
+
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                Thread.Sleep(100);
+                cornerbuffer = new Color[3]
+                { cube.cubeorientationleft[0, 0],cube.cubeorientationup[0, 0],cube.cubeorientationback[2, 0]};
+
+
+                for (int i = 0; i < 23; i++)
+                {
+                    if (cornerbuffer[0] == wholecubeedge[i][0] && (cornerbuffer[1] == wholecubeedge[i][1]|| cornerbuffer[1] == wholecubeedge[i][2]) && (cornerbuffer[2] == wholecubeedge[i][1] || cornerbuffer[1] == wholecubeedge[i][2]))
+                    {
+
+                        switch (i)
+                        {
+                            case 0:
+                                //buffer
+                                break;
+                            case 1:
+                                cube.Turn(4, gameTime);
+                                cube.Turn(4, gameTime);
+                                DoAlgorithmC(cube);
+                                cube.Turn(4, gameTime);
+                                cube.Turn(4, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 2:
+                                cube.Turn(6, gameTime);
+                                cube.Turn(6, gameTime);
+                                cube.Turn(20, gameTime);
+                                DoAlgorithmC(cube);
+                                cube.Turn(50, gameTime);
+                                cube.Turn(6, gameTime);
+                                cube.Turn(6, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 3:
+                                cube.Turn(6, gameTime);
+                                cube.Turn(6, gameTime);
+                            
+                                DoAlgorithmC(cube);
+                             
+                                cube.Turn(6, gameTime);
+                                cube.Turn(6, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 4:
+                                //buffer
+                                break;
+                            case 5:
+                                cube.Turn(3, gameTime);
+                                cube.Turn(20, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(50, gameTime);
+                                cube.Turn(6, gameTime); ;
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 6:
+                                cube.Turn(3, gameTime);
+                               
+                                DoAlgorithmC(cube);
+                                
+                                cube.Turn(6, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 7:
+                                cube.Turn(50, gameTime);
+                                cube.Turn(4, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(1, gameTime);
+                                cube.Turn(20, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 8:
+                          
+                                cube.Turn(6, gameTime);
+                                cube.Turn(1, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(4, gameTime);
+                                cube.Turn(3, gameTime);
+
+                                unsolvedcorners.Remove(i);
+
+                                break;
+                            case 9:
+                            
+                                cube.Turn(1, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(4, gameTime);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 10:
+                                cube.Turn(3, gameTime);
+                             
+                                cube.Turn(1, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(4, gameTime);
+                                cube.Turn(6, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 11:
+                                cube.Turn(6, gameTime);
+                                cube.Turn(6, gameTime);
+                                cube.Turn(1, gameTime);
+                                DoAlgorithmC(cube);
+                                cube.Turn(4, gameTime);
+                                cube.Turn(6, gameTime);
+                                cube.Turn(6, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 12:
+                                cube.Turn(6, gameTime);
+                                DoAlgorithmC(cube);
+                                cube.Turn(3, gameTime);
+                                unsolvedcorners.Remove(i);
+
+                                break;
+                            case 13:
+                                cube.Turn(1, gameTime);
+                                cube.Turn(6, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(3, gameTime);
+                                cube.Turn(4, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 14:
+                                cube.Turn(1, gameTime);
+                                cube.Turn(1, gameTime);
+                                cube.Turn(6, gameTime);
+                                
+                                DoAlgorithmC(cube);
+                                cube.Turn(3, gameTime);
+                                cube.Turn(1, gameTime);
+                                cube.Turn(1, gameTime);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 15:
+                                cube.Turn(4, gameTime);
+                                cube.Turn(6, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(3, gameTime);
+                                cube.Turn(2, gameTime);
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 16:
+                                cube.Turn(4, gameTime);
+                                cube.Turn(50, gameTime);
+                           
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(20, gameTime);
+                                cube.Turn(1, gameTime);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 17:
+                                //buffer
+                                break;
+                            case 18:
+                                cube.Turn(20, gameTime);
+                                cube.Turn(3, gameTime);
+                              
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(6, gameTime);
+                                cube.Turn(50, gameTime);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 19:
+
+                            
+                                cube.Turn(4, gameTime);
+
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(1, gameTime);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 20:
+                                cube.Turn(2, gameTime);
+                             
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(5, gameTime);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 21:
+                               
+                                DoAlgorithmC(cube);
+
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 22:
+                                cube.Turn(50, gameTime);
+                             
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(20, gameTime);
+                               
+                                unsolvedcorners.Remove(i);
+                                break;
+                            case 23:
+                                cube.Turn(50, gameTime);
+                                cube.Turn(50, gameTime);
+                                DoAlgorithmC(cube);
+
+                                cube.Turn(50, gameTime); ;
+                                cube.Turn(50, gameTime);
+                                unsolvedcorners.Remove(i);
                                 break;
 
 
