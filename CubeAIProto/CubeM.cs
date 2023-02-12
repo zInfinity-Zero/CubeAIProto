@@ -28,8 +28,10 @@ namespace CubeAIProto
 
         private TimerManager tmanager = new TimerManager(500);
         public int numofmoves { get; set; } = 0;
+        private string solvingstep, displaysolvingstep = "";
 
-       
+
+
 
         public CubeM()
         {
@@ -68,10 +70,21 @@ namespace CubeAIProto
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D2))
             {
-                Turn(81,g);
+                Turn(2,g);
                 Thread.Sleep(50);
             }
-            
+            if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                Turn(3, g);
+
+                Thread.Sleep(50);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D7))
+            {
+                Turn(7, g);
+                Thread.Sleep(50);
+            }
+
         }
         public void XTurn()
         {

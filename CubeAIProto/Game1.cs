@@ -288,7 +288,7 @@ namespace CubeAIProto
                     cubeM.Turn(coralgo[i], gameTime);
                 }
             }
-
+            
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 Thread.Sleep(100);
